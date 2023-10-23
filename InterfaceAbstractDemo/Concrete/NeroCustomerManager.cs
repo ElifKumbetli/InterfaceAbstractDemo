@@ -8,11 +8,28 @@ using System.Threading.Tasks;
 
 namespace InterfaceAbstractDemo.Concrete
 {
-    internal class NeroCustomerManager : BaseCustomerManager
+    
+    public class NeroCustomerManager:BaseCustomerManager
     {
-        public void Save(Customer customer)
+        private ICustomerCheckService _customerCheckService;
+
+        public NeroCustomerManager(ICustomerCheckService customerCheckService)
         {
-            throw new NotImlementedException();
+            _customerCheckService = customerCheckService;
+        }
+
+        public override void Save(Customer customer)
+        {
+            if (_customerCheckService.CheckIfPerson(customer))
+            {
+                base.Save(customer);
+
+            }
+            else
+            {
+                throw new Exception("Not a valid person");
+
+            }
         }
     }
 }
